@@ -14,7 +14,7 @@ server=FastMCP('Rag_server')
 def rag_tool(query: str)-> dict:
     """This rag tool return the related docs to the given query """
     embedding_model=GoogleGenerativeAIEmbeddings(model='models/text-embedding-004')
-    vector_store=FAISS.load_local('C:/Users/aashi/Desktop/MCP_client/rag_server_with_client/vector-db',embeddings=embedding_model,allow_dangerous_deserialization=True) 
+    vector_store=FAISS.load_local('vector-db',embeddings=embedding_model,allow_dangerous_deserialization=True) 
     
     retriever=vector_store.as_retriever(search_type='similarity',kwargs={'k':5
                                                                          })
