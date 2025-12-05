@@ -8,16 +8,16 @@ from langchain_community.vectorstores import FAISS
 
 
 server=FastMCP('Rag_server') 
+embedding_model=GoogleGenerativeAIEmbeddings(model='models/text-embedding-004')
+vector_store=FAISS.load_local('vector-db',embeddings=embedding_model,allow_dangerous_deserialization=True) 
 
+retriever=vector_store.as_retriever(search_type='similarity',kwargs={'k':5
+                                                                        })
 
 @server.tool 
 def rag_tool(query: str)-> dict:
     """This rag tool return the related docs to the given query """
-    embedding_model=GoogleGenerativeAIEmbeddings(model='models/text-embedding-004')
-    vector_store=FAISS.load_local('vector-db',embeddings=embedding_model,allow_dangerous_deserialization=True) 
     
-    retriever=vector_store.as_retriever(search_type='similarity',kwargs={'k':5
-                                                                         })
     #now lets invoke the retriever 
     docs=retriever.invoke(query) 
     #now lets combine the context of differnt docs 
